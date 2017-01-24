@@ -127,18 +127,18 @@ function loan() {
 		$("#barcode").prop("disabled", true);
 
     	$.ajax({
-    		type: "POST",
+    		type: "GET",
     		//url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans?user_id_type=all_unique&item_barcode=" + $("#barcode").val() + "&apikey=" + apiKey,
-			//url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans&user_id_type=all_unique&item_barcode=" + $("#barcode").val(),
-    		//contentType: "application/xml",
+			url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans&user_id_type=all_unique&item_barcode=" + $("#barcode").val(),
+    		contentType: "application/xml",
     		//data: "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>" + circDesk + "</circ_desk><library>" + libraryName + "</library></item_loan>",
-    		//dataType: "xml"
+    		dataType: "xml"
     	}).done(function(data){
     		
     		var dueDate = new Date($(data).find("due_date").text());
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
-    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td><td>" + barcode +"</td></tr>");
-    		window.print()
+    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td><td>" + $(data).find("item_barcode").text() + "</td></tr>");
+    		
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
@@ -147,6 +147,7 @@ function loan() {
     		$("#modalheader").text("");
     		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		$("#barcodeerrorbutton").focus();
+    		
     		$(".close").show();
 
     		$("#barcode").val("");

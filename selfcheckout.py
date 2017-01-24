@@ -30,5 +30,7 @@ def loan(userid, barcode):
 	headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
 	xml = "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>%s</circ_desk><library>%s</library></item_loan>" % (circDesk, libraryName)
 	response = requests.post(url, params=params, headers=headers, data=xml)
-	return Response(response, mimetype='xml')
-	
+	if response.status_code == 200:
+		return Response(response, mimetype='xml')
+	else:
+		return response
