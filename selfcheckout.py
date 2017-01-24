@@ -1,8 +1,7 @@
 from flask import Flask
 app = Flask(__name__)
-from flask import request, json, jsonify
+from flask import request
 import requests 
-import xml.etree.ElementTree as ET
 from flask import Response
 
 @app.route('/almaws/v1/users/<userid>&expand=loans,requests,fees&format=json')
