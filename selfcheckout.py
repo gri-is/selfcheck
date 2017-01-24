@@ -13,8 +13,10 @@ def login(userid):
 	params['expand'] = "loans,requests,fees"
 	params['format'] = "json"
 	response = requests.get(url, params=params)
-	print(response)
-	return Response(response, mimetype="application/json")
+	if response.status_code == 200:
+		return Response(response, mimetype="application/json")
+	else:
+		return response
 	
 @app.route('/almaws/v1/users/<userid>/loans&user_id_type=all_unique&item_barcode=<barcode>', methods=['GET','POST'])
 def loan(userid, barcode):
