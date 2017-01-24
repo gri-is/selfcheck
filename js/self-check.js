@@ -147,7 +147,6 @@ function loan() {
     		$("#modalheader").text("");
     		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		$("#barcodeerrorbutton").focus();
-    		
     		$(".close").show();
 
     		$("#barcode").val("");
