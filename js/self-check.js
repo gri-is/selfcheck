@@ -144,8 +144,8 @@ function loan() {
     		// write receipt and print, patron info found in login
     		var receipt = window.open('','','width=200,height=100');
     		receipt.document.write(
-    		"<h2>Patron: " + patron + "</h2><br><h3>Staff Status: " + status + 
-    		"</h3><br><b>Title: </b>" + $(data).find("title").text() + 
+    		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
+    		"</font><br><b>Title: </b>" + $(data).find("title").text() + 
     		"<b><br>Author: </b>" + $(data).find("author").text() + 
     		"<br><b>Barcode: </b>" + $(data).find("item_barcode").text() + 
     		"<br><b>Due Date: </b>" + dueDateText);
