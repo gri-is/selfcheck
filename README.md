@@ -2,6 +2,20 @@ Alma Self-Check Application
 
 Bugs:
 
-*If wrong user ID is entered the program won't quit
+* If wrong user ID is entered the program won't quit, caused by recieving a 200 response instead of the correct error response (FIXED)
 
-*Metadata shows up differently based on account, won't show checked out books as being checked out but won't actually checkout the book to the account
+* Users can checkout books that have been checked out by other users, the other user loses the book on their account. (BUG in original program)
+
+* Automatic printing should be set up with the physical computer
+
+Receipt info wanted:
+
+* Patron Name
+
+* Patron Status
+
+* Book Title & Author
+
+* Book Barcode
+
+* Due Date
