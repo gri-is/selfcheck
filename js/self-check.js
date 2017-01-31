@@ -5,7 +5,6 @@ var baseURL = "http://127.0.0.1:5000/";
 var libraryName = "GC";
 var circDesk = "GRI Open S";
 
-
 function initiate() {
 	getModalBox();
 	
@@ -85,8 +84,9 @@ function login() {
 			
 		}).done(function(data) {
 			user = data;
-			patron = data.full_name;
-			status = data.user_group.desc;
+			test = data.full_name;
+			$(document).data('test', test);
+			rstatus = data.user_group.desc;
 
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
@@ -139,24 +139,20 @@ function loan() {
     		
     		var dueDate = new Date($(data).find("due_date").text());
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
-    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td><td>" + $(data).find("item_barcode").text() + "</td></tr>");
+    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td><td>" + $(data).find("item_barcode").text() + "</td></tr>");	
+
+    		rdueDateText = dueDateText;
+    		rlocation = $(data).find("location_code").text();
+    		rcall_numb = $(data).find("call_number").text();
+    		rbarcode = $(data).find("item_barcode").text();
+    		rtitle = $(data).find("title").text();
+    		rauthor = $(data).find("author").text();
+    		 
 			
-			html = "<font size='6'><b>" + patron + 
-			"</font></b><br><font size='4'>" + status + 
-			"<br><br>" + new Date() +
-			"</font><br><br><b>Location: </b>" + $(data).find("location_code").text() + 
-			"</font><br><b>Call Number: </b>" + $(data).find("call_number").text() + 
-    		"</font><br><br><b>Title: </b>" + $(data).find("title").text() + 
-    		"<b><br>Author: </b>" + $(data).find("author").text() + 
-    		"<br><b>Barcode: </b>" + $(data).find("item_barcode").text() + 
-    		"<br><b>Due Date: </b>" + dueDateText +
-    		'<br><br><img src="footer_logo.gif">'
-    		
-    	 	// write receipt and print, patron info found in login
-    		var receipt = window.open('','','width=200,height=100');
-    		receipt.document.write(html);
-    		receipt.print();
-    		receipt.close();
+			var r = window.open('receipt.html','','width=200,height=100');
+			//r.document.write(test);
+			//r.print();
+    		//r.close();
     		
     		returnToBarcode();
     		
@@ -176,6 +172,17 @@ function loan() {
     	
     }
 } 
+
+function receipt() {
+$("#patron").append(String(test));
+//$("status").append(rstatus);
+//$("#location").append(rlocation);
+//$("#call_numb").append(rcall_numb);
+//$("#barcode").append(rbarcode);
+//$("#title").append(rtitle);
+//$("#author").append(rauthor);
+//$("#due_date").append(rdueDateText);
+}
 
 function logout() {
 	$("#userid").val("");
