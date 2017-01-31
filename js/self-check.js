@@ -85,7 +85,6 @@ function login() {
 		}).done(function(data) {
 			user = data;
 			test = data.full_name;
-			$(document).data('test', test);
 			rstatus = data.user_group.desc;
 
 			// prepare scan box
