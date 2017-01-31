@@ -3,7 +3,6 @@ app = Flask(__name__)
 from flask import request
 import requests 
 from flask import Response
-import xml.dom.minidom as xml
 
 @app.route('/almaws/v1/users/<userid>&expand=loans,requests,fees&format=json')
 def login(userid):
