@@ -3,6 +3,7 @@ app = Flask(__name__)
 from flask import request
 import requests 
 from flask import Response
+import xml.dom.minidom as xml
 
 @app.route('/almaws/v1/users/<userid>&expand=loans,requests,fees&format=json')
 def login(userid):
@@ -35,7 +36,7 @@ def loan(userid, barcode):
 	output = redirecturl[:index] + "/loans" + redirecturl[index:]
 	bibresponse = requests.get(output)
 	
-	if bibresponse == not checked out:
+	if 'total_record_count="0"' in bibresponse.text:
 		headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
 		xml = "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>%s</circ_desk><library>%s</library></item_loan>" % (circDesk, libraryName)
 		response = requests.post(url, params=params, headers=headers, data=xml)
@@ -44,4 +45,4 @@ def loan(userid, barcode):
 		else:
 			return response
 	else:
-		return 
+		return bibresponse
