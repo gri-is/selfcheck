@@ -17,19 +17,31 @@ def login(userid):
 	else:
 		return response
 	
-@app.route('/almaws/v1/users/<userid>/loans&user_id_type=all_unique&item_barcode=<barcode>', methods=['GET','POST'])
+@app.route('/almaws/v1/users/<userid>/loans&item_barcode=<barcode>', methods=['GET','POST'])
 def loan(userid, barcode):
 	libraryName = "GC"
 	circDesk = "GRI Open S"
 	url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/{}/loans".format(userid)
 	params = {}
-	params['user_id_type'] = 'all_unique'
+	#params['user_id_type'] = 'all_unique'
 	params['apiKey'] = 'l7xx63b4aabaf9264e54a680923760dbfa94'
 	params['item_barcode'] = barcode
-	headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
-	xml = "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>%s</circ_desk><library>%s</library></item_loan>" % (circDesk, libraryName)
-	response = requests.post(url, params=params, headers=headers, data=xml)
-	if response.status_code == 200:
-		return Response(response, mimetype='xml')
+
+	#test to see if book is already checked out
+	bibsurl = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/items"
+	redirect = requests.get(bibsurl, params=params)
+	redirecturl = str(redirect.url)
+	index = redirecturl.find('?')
+	output = redirecturl[:index] + "/loans" + redirecturl[index:]
+	bibresponse = requests.get(output)
+	
+	if bibresponse == not checked out:
+		headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
+		xml = "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>%s</circ_desk><library>%s</library></item_loan>" % (circDesk, libraryName)
+		response = requests.post(url, params=params, headers=headers, data=xml)
+		if response.status_code == 200:
+			return Response(response, mimetype='xml')
+		else:
+			return response
 	else:
-		return response
+		return 
