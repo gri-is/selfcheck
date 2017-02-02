@@ -53,7 +53,6 @@ def loan(userid, barcode):
     
     #del params['item_barcode']
     loans_response = requests.get(url, params=params)
-    print(loans_response.text)
     already_checked_out = loans_response.json().get('item_loan', False)
     if already_checked_out:
         return Response('Already Checked Out', 409)
