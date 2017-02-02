@@ -61,7 +61,7 @@ def loan(userid, barcode):
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
     response = requests.post(url, params=params, headers=headers, data=LOAN_XML)
-    return response.text
+    return Response(response, mimetype="application/json")
     
 
 if __name__ == "__main__":
