@@ -45,18 +45,19 @@ def loan(userid, barcode):
     params = {'apiKey': API_KEY,
               'item_barcode': barcode,
               'format': 'json'}
-    redirect = requests.head(barcodeurl, params=params, allow_redirects=True)
-    url = redirect.url
     
+    redirect = requests.get(barcodeurl, params=params, allow_redirects=True)
+    url = redirect.url
     url, _ = url.split('?')
     url = '{}/loans'.format(url)
+    
     #del params['item_barcode']
     loans_response = requests.get(url, params=params)
+    print(loans_response.text)
     already_checked_out = loans_response.json().get('item_loan', False)
-    '''
     if already_checked_out:
-        return Response(status='Already Checked Out', status_code='409')
-    '''
+        return Response('Already Checked Out', 409)
+    
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
