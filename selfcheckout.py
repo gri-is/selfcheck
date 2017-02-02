@@ -36,7 +36,7 @@ def login(userid):
     if response.status_code == 200:
         return Response(response, mimetype="application/json")
     else:
-        return response
+        return Response('Incorrect Login<br>Try Again', 400)
     
 @app.route('/checkout/<userid>/<barcode>')
 def loan(userid, barcode):  
@@ -45,7 +45,7 @@ def loan(userid, barcode):
     params = {'apiKey': API_KEY,
               'item_barcode': barcode,
               'format': 'json'}
-    redirect = requests.head(barcodeurl, params=params, allow_redirects=True)
+    redirect = requests.get(barcodeurl, params=params, allow_redirects=True)
     url = redirect.url
     
     url, _ = url.split('?')
@@ -53,10 +53,11 @@ def loan(userid, barcode):
     #del params['item_barcode']
     loans_response = requests.get(url, params=params)
     already_checked_out = loans_response.json().get('item_loan', False)
-    '''
+
     if already_checked_out:
-        return Response(status='Already Checked Out', status_code='409')
-    '''
+        return Response('This item is already checked out', 409)
+    if loans_response.status_code == 404:
+    	return Response('Error incorrect barcode', 404)
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
