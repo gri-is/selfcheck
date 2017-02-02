@@ -46,7 +46,7 @@ def loan(userid, barcode):
               'item_barcode': barcode,
               'format': 'json'}
     
-    '''redirect = requests.get(barcodeurl, params=params, allow_redirects=True)
+    redirect = requests.get(barcodeurl, params=params, allow_redirects=True)
     url = redirect.url
     url, _ = url.split('?')
     url = '{}/loans'.format(url)
@@ -56,7 +56,7 @@ def loan(userid, barcode):
     already_checked_out = loans_response.json().get('item_loan', False)
     if already_checked_out:
         return Response('Already Checked Out', 409)
-    '''
+    
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
