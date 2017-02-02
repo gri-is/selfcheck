@@ -5,3 +5,5 @@ __pycache__
 LICENSE.md
 
 *.pyc
+
+ENV

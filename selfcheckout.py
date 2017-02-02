@@ -1,47 +1,68 @@
-from flask import Flask
-app = Flask(__name__)
-from flask import request
+import sys
+
+from flask import Flask, Response, request
 import requests 
-from flask import Response
 
-@app.route('/almaws/v1/users/<userid>&expand=loans,requests,fees&format=json')
+
+app = Flask(__name__)
+
+
+API_URL = 'https://api-na.hosted.exlibrisgroup.com/almaws/v1'
+API_KEY = 'l7xx63b4aabaf9264e54a680923760dbfa94'
+CIRC_DESK = 'GRI Open S'
+LIB_NAME = 'GC'
+
+LOAN_XML = """<?xml version='1.0' encoding='UTF-8'?>
+  <item_loan>
+    <circ_desk>{}</circ_desk>
+    <library>{}</library>
+  </item_loan>
+""".format(CIRC_DESK, LIB_NAME)
+
+
+@app.route('/')
+def root():
+    return app.send_static_file('self-check.html')
+
+
+@app.route('/login/<userid>')
 def login(userid):
-	url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/{}".format(userid)
-	params = {}
-	params['apiKey'] = 'l7xx63b4aabaf9264e54a680923760dbfa94'
-	params['expand'] = "loans,requests,fees"
-	params['format'] = "json"
-	response = requests.get(url, params=params)
-	if response.status_code == 200:
-		return Response(response, mimetype="application/json")
-	else:
-		return response
-	
-@app.route('/almaws/v1/users/<userid>/loans&item_barcode=<barcode>', methods=['GET','POST'])
-def loan(userid, barcode):
-	libraryName = "GC"
-	circDesk = "GRI Open S"
-	url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/{}/loans".format(userid)
-	params = {}
-	#params['user_id_type'] = 'all_unique'
-	params['apiKey'] = 'l7xx63b4aabaf9264e54a680923760dbfa94'
-	params['item_barcode'] = barcode
+    url = "{}/users/{}".format(API_URL, userid)
+    params = {}
+    params['apiKey'] = API_KEY
+    params['expand'] = "loans,requests,fees"
+    params['format'] = "json"
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        return Response(response, mimetype="application/json")
+    else:
+        return response
+    
+@app.route('/checkout/<userid>/<barcode>')
+def loan(userid, barcode):  
+    #test to see if book is already checked out
+    barcodeurl = "{}/items".format(API_URL)
+    params = {'apiKey': API_KEY,
+              'item_barcode': barcode,
+              'format': 'json'}
+    redirect = requests.head(barcodeurl, params=params, allow_redirects=True)
+    url = redirect.url
+    
+    url, _ = url.split('?')
+    url = '{}/loans'.format(url)
+    #del params['item_barcode']
+    loans_response = requests.get(url, params=params)
+    already_checked_out = loans_response.json().get('item_loan', False)
+    '''
+    if already_checked_out:
+        return Response(status='Already Checked Out', status_code='409')
+    '''
+    # Checkout the item    
+    url = "{}/users/{}/loans".format(API_URL, userid)
+    headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
+    response = requests.post(url, params=params, headers=headers, data=LOAN_XML)
+    return response.text
+    
 
-	#test to see if book is already checked out
-	bibsurl = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/items"
-	redirect = requests.get(bibsurl, params=params)
-	redirecturl = str(redirect.url)
-	index = redirecturl.find('?')
-	output = redirecturl[:index] + "/loans" + redirecturl[index:]
-	bibresponse = requests.get(output)
-	
-	if 'total_record_count="0"' in bibresponse.text:
-		headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
-		xml = "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>%s</circ_desk><library>%s</library></item_loan>" % (circDesk, libraryName)
-		response = requests.post(url, params=params, headers=headers, data=xml)
-		if response.status_code == 200:
-			return Response(response, mimetype='xml')
-		else:
-			return response
-	else:
-		return bibresponse
+if __name__ == "__main__":
+    app.run()

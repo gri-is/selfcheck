@@ -77,8 +77,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		//url: baseURL + "almaws/v1/users/" + $("#userid").val() + "?apikey=" + apiKey + "&expand=loans,requests,fees&format=json",
-    		url: baseURL + "almaws/v1/users/" + $("#userid").val() + "&expand=loans,requests,fees&format=json",
+    		url: baseURL + "login/" + $("#userid").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -130,24 +129,23 @@ function loan() {
 
     	$.ajax({
     		type: "GET",
-    		//url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans?user_id_type=all_unique&item_barcode=" + $("#barcode").val() + "&apikey=" + apiKey,
-			url: baseURL + "almaws/v1/users/" + user.primary_id + "/loans&item_barcode=" + $("#barcode").val(),
+			url: baseURL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
     		contentType: "application/xml",
-    		//data: "<?xml version='1.0' encoding='UTF-8'?><item_loan><circ_desk>" + circDesk + "</circ_desk><library>" + libraryName + "</library></item_loan>",
     		dataType: "xml"
     	}).done(function(data){
     		
-    		var dueDate = new Date($(data).find("due_date").text());
+    		//var dueDate = new Date($(data).find("due_date").text());
+            var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
-    		$("#loanstable").append("<tr><td>" + $(data).find("title").text() + "</td><td>" + dueDateText + "</td><td>" + $(data).find("item_barcode").text() + "</td></tr>");
+    		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
     		// write receipt and print, patron info found in login
     		var receipt = window.open('','','width=200,height=100');
     		receipt.document.write(
     		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
-    		"</font><br><b>Title: </b>" + $(data).find("title").text() + 
-    		"<b><br>Author: </b>" + $(data).find("author").text() + 
-    		"<br><b>Barcode: </b>" + $(data).find("item_barcode").text() + 
+    		"</font><br><b>Title: </b>" + data["title"] + 
+    		"<b><br>Author: </b>" + data["author"] + 
+    		"<br><b>Barcode: </b>" + data["item_barcode"] + 
     		"<br><b>Due Date: </b>" + dueDateText);
     		receipt.print();
     		receipt.close();
