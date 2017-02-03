@@ -140,15 +140,16 @@ function loan() {
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
     		// write receipt and print, patron info found in login
-    		var receipt = window.open('','','width=200,height=100');
-    		receipt.document.write(
-    		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
-    		"</font><br><b>Title: </b>" + data["title"] + 
-    		"<b><br>Author: </b>" + data["author"] + 
-    		"<br><b>Barcode: </b>" + data["item_barcode"] + 
-    		"<br><b>Due Date: </b>" + dueDateText);
-    		receipt.print();
-    		receipt.close();
+    		receipt();
+    		receipt = window.open('receipt','','width=200,height=100');
+    		//receipt.document.write(
+    		//"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
+    		//"</font><br><b>Title: </b>" + data["title"] + 
+    		//"<b><br>Author: </b>" + data["author"] + 
+    		//"<br><b>Barcode: </b>" + data["item_barcode"] + 
+    		//"<br><b>Due Date: </b>" + dueDateText);
+    		//receipt.print();
+    		//receipt.close();
     		
     		returnToBarcode();
     		
@@ -172,7 +173,7 @@ function loan() {
 } 
 
 function receipt() {
-$("#patron").append(rpatron);
+$("#patron").append("testing...");
 //$("status").append(rstatus);
 //$("#location").append(rlocation);
 //$("#call_numb").append(rcall_numb);
