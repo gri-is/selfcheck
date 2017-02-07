@@ -127,7 +127,7 @@ function loaduser(data) {
 }
 
 function loan() {
-	
+
 	var barcode = $("#barcode").val();
     if ((barcode != null) && (barcode != "")) {
     	
