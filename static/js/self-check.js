@@ -162,7 +162,7 @@ function loan() {
     		
     		$("#modalheader").text("");
     		if (jqxhr.status == 200){
-    		$("#modalheader").append("Item was checked out you<br/><br/>pop-up blocker preventing receipt from being printed<input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		$("#modalheader").append("Item was checked out to you<br/><br/>pop-up blocker preventing receipt from being printed<input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}
     		else {
      		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
