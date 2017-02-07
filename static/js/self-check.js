@@ -155,7 +155,7 @@ function loan() {
     	}).fail(function(jqxhr, textStatus, error, status) {
     		//console.log(jqxhr.responseText);
     		console.log(jqxhr.error);
-			console.log(jqxhr);
+	
     		$("#modalheader").text("");
     		if (jqxhr.status == 409) {
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
