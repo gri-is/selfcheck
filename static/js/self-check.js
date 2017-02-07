@@ -77,7 +77,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		url: baseURL + "login/" + $("#userid").val(),
+    		url: baseURL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -86,7 +86,7 @@ function login() {
 			user = data;
 			patron = data.full_name;
 			status = data.user_group.desc;
-
+			
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);

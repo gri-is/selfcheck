@@ -2,7 +2,7 @@ import sys
 
 from flask import Flask, Response, request
 import requests 
-
+import json
 
 app = Flask(__name__)
 
@@ -25,16 +25,19 @@ def root():
     return app.send_static_file('self-check.html')
 
 
-@app.route('/login/<userid>')
-def login(userid):
+@app.route('/login/<userid>/<lastname>')
+def login(userid, lastname):
     url = "{}/users/{}".format(API_URL, userid)
     params = {}
     params['apiKey'] = API_KEY
     params['expand'] = "loans,requests,fees"
     params['format'] = "json"
     response = requests.get(url, params=params)
-    if response.status_code == 200:
-        return Response(response, mimetype="application/json")
+    if response.json().get("last_name").lower() == lastname.lower():
+    	if response.status_code == 200:
+        	return Response(response, mimetype="application/json")
+        else:
+        	return response
     else:
         return response
     
