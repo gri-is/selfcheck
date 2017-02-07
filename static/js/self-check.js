@@ -140,6 +140,7 @@ function loan() {
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
     		// write receipt and print, patron info found in login
+    		try {
     		var receipt = window.open('','','width=200,height=100');
     		receipt.document.write(
     		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
@@ -149,14 +150,23 @@ function loan() {
     		"<br><b>Due Date: </b>" + dueDateText);
     		receipt.print();
     		receipt.close();
-    		
+    		} catch (exception) {
+    			throw 1234;
+    		};
     		returnToBarcode();
     		
-    	}).fail(function(jqxhr, textStatus, error) {
+    	}).fail(function(jqxhr, textStatus, error, status) {
     		console.log(jqxhr.responseText);
+    		console.log(jqxhr.status);
+    		console.log(jqxhr.error);
     		
     		$("#modalheader").text("");
-    		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		if (jqxhr.status == 200){
+    		$("#modalheader").append("Item was checked out you<br/><br/>pop-up blocker preventing receipt from being printed<input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
+    		else {
+     		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+   			}
     		$("#barcodeerrorbutton").focus();
     		
     		$(".close").show();
