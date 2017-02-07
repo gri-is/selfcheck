@@ -53,6 +53,16 @@ function getModalBox() {
 	*/
 }
 
+function inactive() {
+var time;
+window.onload = clearTimeout(time);
+document.onmousemove = clearTimeout(time);
+document.onkeypress = clearTimeout(time);
+
+clearTimeout(time);
+time = setTimeout(logout(), 6000);
+}
+
 function returnToBarcode() {
 	$("#barcode").prop("disabled", false);
 	$("#myModal").hide();
