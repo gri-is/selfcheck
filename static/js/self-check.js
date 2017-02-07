@@ -150,14 +150,14 @@ function loan() {
     		"<br><b>Due Date: </b>" + dueDateText);
     		receipt.print();
     		receipt.close();
-    		} catch (exception) {
-    			throw 1234;
-    		};
+    		} 
+    		catch (exception) {
+				window.onerror=silentErrorHandler;
+    		}
     		returnToBarcode();
     		
-    	}).fail(function(jqxhr, textStatus, error, status) {
-    		console.log(jqxhr.responseText);
-    		console.log(jqxhr.status);
+    	}).fail(function(jqxhr, textStatus, error) {
+    		console.log(jqxhr.textStatus);
     		console.log(jqxhr.error);
     		
     		$("#modalheader").text("");
