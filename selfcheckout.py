@@ -34,12 +34,12 @@ def login(userid, lastname):
     params['format'] = "json"
     response = requests.get(url, params=params)
     if response.json().get("last_name").lower() == lastname.lower():
-    	if response.status_code == 200:
-        	return Response(response, mimetype="application/json")
+        if response.status_code == 200:
+            return Response(response, mimetype="application/json")
         else:
-        	return response
+            return Response('Incorrect Login<br> Try Again', 500)
     else:
-        return response
+        return Response('Incorrect Login<br>Try Again', 500)
     
 @app.route('/checkout/<userid>/<barcode>')
 def loan(userid, barcode):  
