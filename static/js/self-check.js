@@ -17,7 +17,7 @@ function initiate() {
 	});
 	
 
-	$("#userid").bind("keypress", function(e) {
+	$("#lastname").bind("keypress", function(e) {
 		var code = e.keyCode || e.which;
 		if(code == 13) {
 			login();
@@ -66,9 +66,11 @@ function returnToBarcode() {
 
 function login() {
     var loginid = $("#userid").val();
-    if ((loginid != null) && (loginid != "")) {
+    var lastname = $("#lastname").val();
+    if ((loginid != null) && (loginid != "") && (lastname != null) && (lastname != "")){
     	
     	$("#userid").prop("disabled", true);
+    	$("#lastname").prop("disabled", true);
     	$("#loginerror").addClass("hide");
     	
     	$("#modalheader").text("loading data, please wait...");
@@ -107,6 +109,7 @@ function login() {
 		    
 		}).always(function() {
 			$("#userid").prop("disabled", false);
+			$("#lastname").prop("disabled", false);
 		    $("#myModal").hide();
 		});
     }
@@ -173,6 +176,7 @@ function loan() {
 
 function logout() {
 	$("#userid").val("");
+	$("#lastname").val("");
 	$("#loginbox").toggleClass("hide");
 	$("#scanbox").toggleClass("hide");
 	$("#userid").focus();
