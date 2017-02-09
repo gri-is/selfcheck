@@ -139,7 +139,7 @@ function loan() {
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		// write receipt and print, patron info found in login
     		
-    		receipt = window.open('receipt','','width=200,height=100');
+    		receipt = window.open('receipt','width=200,height=100');
     		//receipt.document.write(
     		//"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
     		//"</font><br><b>Title: </b>" + data["title"] + 
@@ -148,7 +148,7 @@ function loan() {
     		//"<br><b>Due Date: </b>" + dueDateText);
     		//receipt.print();
     		//receipt.close();
-    		
+    		console.log(user);
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
@@ -171,6 +171,7 @@ function loan() {
 
 function receipt() {
 $("#patron").append();
+
 //$("status").append(rstatus);
 //$("#location").append(rlocation);
 //$("#call_numb").append(rcall_numb);
