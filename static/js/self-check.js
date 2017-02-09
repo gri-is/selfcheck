@@ -83,8 +83,8 @@ function login() {
 			
 		}).done(function(data) {
 			user = data;
-			rpatron = data['full_name'];
-			//rstatus = data.user_group.desc;
+			patron = data['full_name'];
+			status = data.user_group.desc;
 
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
@@ -146,8 +146,8 @@ function loan() {
     		//"<b><br>Author: </b>" + data["author"] + 
     		//"<br><b>Barcode: </b>" + data["item_barcode"] + 
     		//"<br><b>Due Date: </b>" + dueDateText);
-    		//receipt.print();
-    		//receipt.close();
+    		receipt.print();
+    		receipt.close();
     		console.log(user);
     		returnToBarcode();
     		
