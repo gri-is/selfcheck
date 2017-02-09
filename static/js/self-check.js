@@ -5,7 +5,6 @@ var baseURL = "http://127.0.0.1:5000/";
 var libraryName = "GC";
 var circDesk = "GRI Open S";
 
-
 function initiate() {
 	getModalBox();
 	
@@ -94,13 +93,13 @@ function login() {
 			$("#userfees").text("$" + data.fees.value);
 			//$("#usernotes").text(data.user_note.length);
 			
-			 $("#loanstable").find("tr:gt(0)").remove();
+			$("#loanstable").find("tr:gt(0)").remove();
 			
 			$("#loginbox").addClass("hide");
 			$("#scanbox").toggleClass("hide");
 			
 			$("#barcode").focus();
-			
+						
 		}).fail(function(jqxhr, textStatus, error) {
 		    $("#loginerror").toggleClass("hide");
 		    console.log(jqxhr.responseText);
@@ -117,7 +116,7 @@ function loaduser(data) {
 }
 
 function loan() {
-	
+
 	var barcode = $("#barcode").val();
     if ((barcode != null) && (barcode != "")) {
     	
@@ -138,9 +137,8 @@ function loan() {
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
-    		
     		// write receipt and print, patron info found in login
-    		receipt();
+    		
     		receipt = window.open('receipt','','width=200,height=100');
     		//receipt.document.write(
     		//"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
@@ -168,12 +166,11 @@ function loan() {
     	}).always(function() {
     		
     	});
-    	
     }
 } 
 
 function receipt() {
-$("#patron").append("testing...");
+$("#patron").append();
 //$("status").append(rstatus);
 //$("#location").append(rlocation);
 //$("#call_numb").append(rcall_numb);
