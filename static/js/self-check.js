@@ -130,8 +130,8 @@ function loan() {
     	$.ajax({
     		type: "GET",
 			url: baseURL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
-    		contentType: "application/xml",
-    		dataType: "xml"
+    		contentType: "application/json",
+    		dataType: "json"
     	}).done(function(data){
     		
     		//var dueDate = new Date($(data).find("due_date").text());
@@ -153,9 +153,9 @@ function loan() {
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
-    		//console.log(jqxhr.responseText);
-    		console.log(jqxhr.error);
-	
+    		console.log(jqxhr.responseText);
+        console.log(textStatus);
+        console.log(error);
     		$("#modalheader").text("");
     		if (jqxhr.status == 409) {
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
