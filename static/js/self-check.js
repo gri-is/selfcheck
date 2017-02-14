@@ -178,15 +178,6 @@ function loan() {
     }
 } 
 
-function inactive() {
-var t;
-window.onload = clearTimeout(t);
-document.onmousemove = clearTimeout(t);
-document.onkeypress = clearTimeout(t);
-t = setTimeout(function(){ alert("Hello"); }, 3000);
-console.log(t);
-}
-
 function logout() {
 	$("#userid").val("");
 	$("#loginbox").toggleClass("hide");
