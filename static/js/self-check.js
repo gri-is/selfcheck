@@ -83,8 +83,8 @@ function login() {
 			
 		}).done(function(data) {
 			user = data;
-			patron = data['full_name'];
-			status = data.user_group.desc;
+			rpatron = data['full_name'];
+			rstatus = data['user_group']['desc'];
 
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
@@ -138,23 +138,28 @@ function loan() {
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		// write receipt and print, patron info found in login
-    		
-			$("#template").loadTemplate("static/receipt.html",
-    		{
-			author: 'Joe Bloggs',
-			date: '25th May 2013',
-			post: 'This is the contents of my post'
+    		$.getScript("static/js/mustache.js", function(){
+			
+    		var templateData = {
+        		patron: rpatron,
+        		status: rstatus,
+        		duedate: dueDateText,
+        		title: data['title'],
+        		author: data['author'],
+        		barcode: data['item_barcode'],
+        		location_name: data.location_code['name'],
+        		location_value: data.location_code['value'],
+        		callnumb: data['call_number'],
+        		date: Date()
+        	};
+    		$.get('static/receipt.mustache', function(templates){
+    		var template = $(templates).filter('#receipt').html();
+    		html = Mustache.to_html(template, templateData); 
+    		receipt = window.open('', '', "width=200,height=100");
+    		receipt.document.write(html);
+    		receipt.print();
     		});
-    		receipt = window.open('receipt','','width=200,height=100');
-    		//receipt.document.write(
-    		//"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
-    		//"</font><br><b>Title: </b>" + data["title"] + 
-    		//"<b><br>Author: </b>" + data["author"] + 
-    		//"<br><b>Barcode: </b>" + data["item_barcode"] + 
-    		//"<br><b>Due Date: </b>" + dueDateText);
-    		//receipt.print();
-    		//receipt.close();
-    		//console.log(user);
+			});
     		
     		returnToBarcode();
     		
@@ -174,7 +179,7 @@ function loan() {
     		
     	});
     }
-} 
+}
 
 function logout() {
 	$("#userid").val("");

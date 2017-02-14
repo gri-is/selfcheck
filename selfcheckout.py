@@ -1,8 +1,7 @@
 import sys
 
 from flask import Flask, Response, request
-import requests 
-
+import requests
 
 app = Flask(__name__)
 
@@ -23,12 +22,6 @@ LOAN_XML = """<?xml version='1.0' encoding='UTF-8'?>
 @app.route('/')
 def root():
     return app.send_static_file('self-check.html')
-
-
-@app.route('/receipt')
-def receipt():
-    return app.send_static_file('receipt.html')
-
 
 @app.route('/login/<userid>')
 def login(userid):
