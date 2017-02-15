@@ -59,14 +59,14 @@ def loan(userid, barcode):
         return Response('This item is already checked out', 409)
     if loans_response.status_code == 404:
     	return Response('Error incorrect barcode', 404)
-    if "reference" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reference Materials', 403)
-    if "non-circulating" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reserve Materials', 403)
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
     response = requests.post(url, params=params, headers=headers, data=LOAN_XML)
+    if response.status_code == 400 and "reference" in redirect.text.lower():
+    	return Response('Cannot Checkout: Reference Materials', 403)
+    if response.status_code == 400 and "non-circulating" in redirect.text.lower():
+    	return Response('Cannot Checkout: Reserve Materials', 403)
     return Response(response, mimetype="application/json")
     
 
