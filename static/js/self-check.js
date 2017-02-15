@@ -119,7 +119,10 @@ function loaduser(data) {
 function loan() {
 	
 	var barcode = $("#barcode").val();
-    if ((barcode != null) && (barcode != "")) {
+	forward_slash = barcode.search('/');
+	back_slash = barcode.search('\\\\.');
+	console.log(back_slash);
+    if ((barcode != null) && (barcode != "") && (forward_slash == -1 ) && (back_slash == -1 )) {
     	
     	$("#modalheader").text("processing request, please wait...");
         $("#myModal").show();
@@ -157,7 +160,7 @@ function loan() {
         console.log(textStatus);
         console.log(error);
     		$("#modalheader").text("");
-    		if (jqxhr.status == 409) {
+    		if (jqxhr.status == 409 || jqxhr.status == 404 || jqxhr.status == 403) {
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}
     		else {

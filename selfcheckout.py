@@ -36,7 +36,7 @@ def login(userid):
     if response.status_code == 200:
         return Response(response, mimetype="application/json")
     else:
-        return Response('Incorrect Login<br>Try Again', 500)
+        return Response('Incorrect Login<br>Try Again', 401)
   
     
 @app.route('/checkout/<userid>/<barcode>')
@@ -58,11 +58,11 @@ def loan(userid, barcode):
     if already_checked_out:
         return Response('This item is already checked out', 409)
     if loans_response.status_code == 404:
-    	return Response('Error incorrect barcode', 409)
+    	return Response('Error incorrect barcode', 404)
     if "reference" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reference Materials', 409)
+    	return Response('Cannot Checkout: Reference Materials', 403)
     if "non-circulating" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reserve Materials', 409)
+    	return Response('Cannot Checkout: Reserve Materials', 403)
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
