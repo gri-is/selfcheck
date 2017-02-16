@@ -140,6 +140,11 @@ function loan() {
     		// write receipt and print, patron info found in login
     		$.getScript("static/js/mustache.js", function(){
 			
+			var value = '';
+			for (var key in data['location_code']) {
+			value = data['location_code'][key];
+			}
+
     		var templateData = {
         		patron: rpatron,
         		status: rstatus,
@@ -147,8 +152,7 @@ function loan() {
         		title: data['title'],
         		author: data['author'],
         		barcode: data['item_barcode'],
-        		location_name: data.location_code['name'],
-        		location_value: data.location_code['value'],
+        		location: value,
         		callnumb: data['call_number'],
         		date: Date()
         	};
