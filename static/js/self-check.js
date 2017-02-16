@@ -158,6 +158,7 @@ function loan() {
     		receipt = window.open('', '', "width=200,height=100");
     		receipt.document.write(html);
     		receipt.print();
+    		receipt.close();
     		});
 			});
     		
