@@ -158,6 +158,7 @@ function loan() {
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
+		console.log(jqxhr.responseText);
     		console.log(jqxhr.textStatus);
     		console.log(jqxhr.error);
     		
