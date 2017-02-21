@@ -142,7 +142,7 @@ function loan() {
 			
 			var value = '';
 			for (var key in data['location_code']) {
-			value += data['location_code'][key] + ' ';
+			value = data['location_code'][key];
 			}
 
     		var templateData = {
