@@ -24,7 +24,6 @@ LOAN_XML = """<?xml version='1.0' encoding='UTF-8'?>
 def root():
     return app.send_static_file('self-check.html')
 
-
 @app.route('/login/<userid>')
 def login(userid):
     url = "{}/users/{}".format(API_URL, userid)

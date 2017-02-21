@@ -16,7 +16,7 @@
 		</script>
 	</head>
 	
-	<body onload="javascript:initiate()">
+	<body onload="javascript:initiate(); javascript:inactive();">
 		<div class="toptoolbar">
 			<div class="logo"><img src="static/images/logo.png" height="52px" /></div>
 		</div>
@@ -84,26 +84,6 @@
 		</div>
 
 <script type="text/javascript">
-var idleTime = 0;
-$(document).ready(function () {
-    //Increment the idle time counter every minute.
-    var idleInterval = setInterval(timerIncrement, 10000); // 1 minute
-
-    //Zero the idle timer on mouse movement.
-    $(this).mousemove(function (e) {
-        idleTime = 0;
-    });
-    $(this).keypress(function (e) {
-        idleTime = 0;
-    });
-});
-
-function timerIncrement() {
-    idleTime = idleTime + 1;
-    if (idleTime => 1) {
-        window.location.reload();
-    }
-}
 </script>   
 	</body>
 </html>

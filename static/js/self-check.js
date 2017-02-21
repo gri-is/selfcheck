@@ -178,6 +178,27 @@ function loan() {
     }
 } 
 
+var timeout = 10;
+var idleseconds = 0;
+document.onclick = function() {
+    idleseconds = 0;
+};
+document.onmousemove = function() {
+    idleseconds = 0;
+};
+document.onkeypress = function() {
+    idleseconds = 0;
+};
+window.setInterval(inactive, 1000);
+
+function inactive() {
+    idleseconds++;
+    console.log(idleseconds);
+    if (idleseconds >= timeout) {
+        window.location.assign("http://127.0.0.1:5000");
+    }
+}
+
 function logout() {
 	$("#userid").val("");
 	$("#loginbox").toggleClass("hide");
