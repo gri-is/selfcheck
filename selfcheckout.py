@@ -7,7 +7,7 @@ import requests
 app = Flask(__name__)
 
 txt = open("apikey.txt", "r")
-apikey = txt.read().strip('\n')
+apikey = txt.read().strip('\n').strip()
 
 API_URL = 'https://api-na.hosted.exlibrisgroup.com/almaws/v1'
 API_KEY = apikey
