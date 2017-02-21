@@ -6,9 +6,11 @@ import requests
 
 app = Flask(__name__)
 
+txt = open("apikey.txt", "r")
+apikey = txt.read().strip('\n')
 
 API_URL = 'https://api-na.hosted.exlibrisgroup.com/almaws/v1'
-API_KEY = 'l7xx63b4aabaf9264e54a680923760dbfa94'
+API_KEY = apikey
 CIRC_DESK = 'GRI Open S'
 LIB_NAME = 'GC'
 

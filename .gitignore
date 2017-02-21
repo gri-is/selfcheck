@@ -6,4 +6,6 @@ LICENSE.md
 
 *.pyc
 
+apikey.txt
+
 ENV
