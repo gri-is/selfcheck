@@ -159,8 +159,8 @@ function loan() {
     		
     	}).fail(function(jqxhr, textStatus, error) {
 		console.log(jqxhr.responseText);
-    		console.log(jqxhr.textStatus);
-    		console.log(jqxhr.error);
+    		console.log(textStatus);
+    		console.log(error);
     		
     		$("#modalheader").text("");
     		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
