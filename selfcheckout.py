@@ -58,7 +58,7 @@ def loan(userid, barcode):
     if already_checked_out:
         return Response('This item is already checked out', 409)
     if loans_response.status_code == 404:
-    	return Response('Error incorrect barcode', 404)
+    	return Response('Error: Invalid Barcode', 404)
     # Checkout the item    
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
