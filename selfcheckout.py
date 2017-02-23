@@ -1,12 +1,8 @@
 import sys
 
 from flask import Flask, Response, request
-<<<<<<< HEAD
-import requests
-=======
 import requests 
 import json
->>>>>>> d7efc9c23ec1fbd36d6781fd85c9e08b3a9f0d1b
 
 app = Flask(__name__)
 
