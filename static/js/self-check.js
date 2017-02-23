@@ -17,7 +17,7 @@ function initiate() {
 	});
 	
 
-	$("#userid").bind("keypress", function(e) {
+	$("#lastname").bind("keypress", function(e) {
 		var code = e.keyCode || e.which;
 		if(code == 13) {
 			login();
@@ -76,9 +76,11 @@ function returnToBarcode() {
 
 function login() {
     var loginid = $("#userid").val();
-    if ((loginid != null) && (loginid != "")) {
+    var lastname = $("#lastname").val();
+    if ((loginid != null) && (loginid != "") && (lastname != null) && (lastname != "")){
     	
     	$("#userid").prop("disabled", true);
+    	$("#lastname").prop("disabled", true);
     	$("#loginerror").addClass("hide");
     	
     	$("#modalheader").text("loading data, please wait...");
@@ -87,7 +89,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		url: baseURL + "login/" + $("#userid").val(),
+    		url: baseURL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -96,7 +98,7 @@ function login() {
 			user = data;
 			patron = data.full_name;
 			status = data.user_group.desc;
-
+			
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);
@@ -117,6 +119,7 @@ function login() {
 		    
 		}).always(function() {
 			$("#userid").prop("disabled", false);
+			$("#lastname").prop("disabled", false);
 		    $("#myModal").hide();
 		});
     }
@@ -139,8 +142,8 @@ function loan() {
     	$.ajax({
     		type: "GET",
 			url: baseURL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
-    		contentType: "application/xml",
-    		dataType: "xml"
+    		contentType: "application/json",
+    		dataType: "json"
     	}).done(function(data){
     		
     		//var dueDate = new Date($(data).find("due_date").text());
@@ -149,6 +152,7 @@ function loan() {
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
     		// write receipt and print, patron info found in login
+    		try {
     		var receipt = window.open('','','width=200,height=100');
     		receipt.document.write(
     		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
@@ -158,14 +162,25 @@ function loan() {
     		"<br><b>Due Date: </b>" + dueDateText);
     		receipt.print();
     		receipt.close();
-    		
+    		} 
+    		catch (exception) {
+    			function silentErrorHandler() {return true;}
+				window.onerror=silentErrorHandler;
+    		}
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
     		console.log(jqxhr.responseText);
-    		
+        console.log(textStatus);
+        console.log(error);
     		$("#modalheader").text("");
-    		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		if (jqxhr.status == 409 || jqxhr.status == 404 && jqxhr.responseText == 'Error: Invalid Barcode' || jqxhr.status == 403 ) {
+    		console.log(jqxhr.error);
+    		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
+    		else {
+    		$("#modalheader").append("Unable to checkout item <br/><br/>Please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
     		$("#barcodeerrorbutton").focus();
     		
     		$(".close").show();
@@ -201,6 +216,7 @@ function inactive() {
 
 function logout() {
 	$("#userid").val("");
+	$("#lastname").val("");
 	$("#loginbox").toggleClass("hide");
 	$("#scanbox").toggleClass("hide");
 	$("#userid").focus();
