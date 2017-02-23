@@ -145,10 +145,8 @@ function loan() {
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
-    		// write receipt and print, patron info found in login
-
-    		$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js", function(){
-			
+    		
+    		// set values to be entered into receipt
 			var value = '';
 			for (var key in data['location_code']) {
 			value = data['location_code'][key];
@@ -165,21 +163,24 @@ function loan() {
         		callnumb: data['call_number'],
         		date: Date()
         	};
+        	//load receipt template and load in values to template
         	try {
+        	//$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js", function(){
     		$.get('static/receipt.html', function(templates){
     		var template = $(templates).filter('#receipt').html();
-    		html = Mustache.to_html(template, templateData); 
+    		console.log(template)
+    		var html = mustache.to_html(template, templateData); 
     		receipt = window.open('', '', "width=200,height=100");
     		receipt.document.write(html);
     		receipt.print();
     		receipt.close();
     		});
+    		//});
     		}
     		catch (exception) {
     			function silentErrorHandler() {return true;}
 				window.onerror=silentErrorHandler;
     		}
-		});
     		
     		returnToBarcode();
     		
