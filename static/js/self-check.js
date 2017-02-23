@@ -157,11 +157,16 @@ function loan() {
     		
     	}).fail(function(jqxhr, textStatus, error) {
     		console.log(jqxhr.responseText);
-            console.log(textStatus);
-            console.log(error);
-    		
+        console.log(textStatus);
+        console.log(error);
     		$("#modalheader").text("");
-    		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		if (jqxhr.status == 409 || jqxhr.status == 404 && jqxhr.responseText == 'Error: Invalid Barcode' || jqxhr.status == 403 ) {
+    		console.log(jqxhr.error);
+    		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
+    		else {
+    		$("#modalheader").append("Unable to checkout item <br/><br/>Please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
     		$("#barcodeerrorbutton").focus();
     		
     		$(".close").show();
