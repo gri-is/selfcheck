@@ -165,17 +165,14 @@ function loan() {
         	};
         	//load receipt template and load in values to template
         	try {
-        	//$.getScript("https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js", function(){
     		$.get('static/receipt.html', function(templates){
     		var template = $(templates).filter('#receipt').html();
-    		console.log(template)
-    		var html = mustache.to_html(template, templateData); 
+    		var html = Mustache.to_html(template, templateData); 
     		receipt = window.open('', '', "width=200,height=100");
     		receipt.document.write(html);
     		receipt.print();
     		receipt.close();
     		});
-    		//});
     		}
     		catch (exception) {
     			function silentErrorHandler() {return true;}
