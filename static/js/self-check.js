@@ -17,7 +17,7 @@ function initiate() {
 	});
 	
 
-	$("#userid").bind("keypress", function(e) {
+	$("#lastname").bind("keypress", function(e) {
 		var code = e.keyCode || e.which;
 		if(code == 13) {
 			login();
@@ -66,9 +66,11 @@ function returnToBarcode() {
 
 function login() {
     var loginid = $("#userid").val();
-    if ((loginid != null) && (loginid != "")) {
+    var lastname = $("#lastname").val();
+    if ((loginid != null) && (loginid != "") && (lastname != null) && (lastname != "")){
     	
     	$("#userid").prop("disabled", true);
+    	$("#lastname").prop("disabled", true);
     	$("#loginerror").addClass("hide");
     	
     	$("#modalheader").text("loading data, please wait...");
@@ -77,7 +79,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		url: baseURL + "login/" + $("#userid").val(),
+    		url: baseURL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -86,7 +88,7 @@ function login() {
 			user = data;
 			patron = data.full_name;
 			status = data.user_group.desc;
-
+			
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);
@@ -107,6 +109,7 @@ function login() {
 		    
 		}).always(function() {
 			$("#userid").prop("disabled", false);
+			$("#lastname").prop("disabled", false);
 		    $("#myModal").hide();
 		});
     }
@@ -158,12 +161,17 @@ function loan() {
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
-		console.log(jqxhr.responseText);
-    		console.log(textStatus);
-    		console.log(error);
-    		
+    		console.log(jqxhr.responseText);
+        console.log(textStatus);
+        console.log(error);
     		$("#modalheader").text("");
-    		$("#modalheader").append("item not avaiable for loan.<br/><br/>please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		if (jqxhr.status == 409 || jqxhr.status == 404 && jqxhr.responseText == 'Error: Invalid Barcode' || jqxhr.status == 403 ) {
+    		console.log(jqxhr.error);
+    		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
+    		else {
+    		$("#modalheader").append("Unable to checkout item <br/><br/>Please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+    		}
     		$("#barcodeerrorbutton").focus();
     		
     		$(".close").show();
@@ -178,6 +186,7 @@ function loan() {
 
 function logout() {
 	$("#userid").val("");
+	$("#lastname").val("");
 	$("#loginbox").toggleClass("hide");
 	$("#scanbox").toggleClass("hide");
 	$("#userid").focus();
