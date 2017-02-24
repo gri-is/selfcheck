@@ -5,7 +5,6 @@ var baseURL = "http://127.0.0.1:5000/";
 var libraryName = "GC";
 var circDesk = "GRI Open S";
 
-
 function initiate() {
 	getModalBox();
 	
@@ -16,6 +15,12 @@ function initiate() {
 		 }
 	});
 	
+	$("#userid").bind("keypress", function(e) {
+		var code = e.keyCode || e.which;
+		if(code == 13) {
+			login();
+		 }
+	});
 
 	$("#lastname").bind("keypress", function(e) {
 		var code = e.keyCode || e.which;
@@ -86,9 +91,9 @@ function login() {
 			
 		}).done(function(data) {
 			user = data;
-			patron = data.full_name;
-			status = data.user_group.desc;
-			
+			rpatron = data['full_name'];
+			rstatus = data['user_group']['desc'];
+
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);
@@ -96,13 +101,13 @@ function login() {
 			$("#userfees").text("$" + data.fees.value);
 			//$("#usernotes").text(data.user_note.length);
 			
-			 $("#loanstable").find("tr:gt(0)").remove();
+			$("#loanstable").find("tr:gt(0)").remove();
 			
 			$("#loginbox").addClass("hide");
 			$("#scanbox").toggleClass("hide");
 			
 			$("#barcode").focus();
-			
+						
 		}).fail(function(jqxhr, textStatus, error) {
 		    $("#loginerror").toggleClass("hide");
 		    console.log(jqxhr.responseText);
@@ -120,7 +125,7 @@ function loaduser(data) {
 }
 
 function loan() {
-	
+
 	var barcode = $("#barcode").val();
     if ((barcode != null) && (barcode != "")) {
     	
@@ -137,27 +142,43 @@ function loan() {
     		dataType: "json"
     	}).done(function(data){
     		
-    		//var dueDate = new Date($(data).find("due_date").text());
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
-    		// write receipt and print, patron info found in login
-    		try {
-    		var receipt = window.open('','','width=200,height=100');
-    		receipt.document.write(
-    		"<font size='6'><b>Patron: </b>" + patron + "</font><br><font size='4'><b>Staff Status: </b>" + status + 
-    		"</font><br><b>Title: </b>" + data["title"] + 
-    		"<b><br>Author: </b>" + data["author"] + 
-    		"<br><b>Barcode: </b>" + data["item_barcode"] + 
-    		"<br><b>Due Date: </b>" + dueDateText);
+    		// set values to be entered into receipt
+			var value = '';
+			for (var key in data['location_code']) {
+			value = data['location_code'][key];
+			}
+
+    		var templateData = {
+        		patron: rpatron,
+        		status: rstatus,
+        		duedate: dueDateText,
+        		title: data['title'],
+        		author: data['author'],
+        		barcode: data['item_barcode'],
+        		location: value,
+        		callnumb: data['call_number'],
+        		date: Date()
+        	};
+        	//load receipt template and load in values to template
+        	try {
+    		$.get('static/receipt.html', function(templates){
+    		var template = $(templates).filter('#receipt').html();
+    		var html = Mustache.to_html(template, templateData); 
+    		receipt = window.open('', '', "width=200,height=100");
+    		receipt.document.write(html);
     		receipt.print();
     		receipt.close();
-    		} 
+    		});
+    		}
     		catch (exception) {
     			function silentErrorHandler() {return true;}
 				window.onerror=silentErrorHandler;
     		}
+    		
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
@@ -180,9 +201,8 @@ function loan() {
     	}).always(function() {
     		
     	});
-    	
     }
-} 
+}
 
 function logout() {
 	$("#userid").val("");
