@@ -4,15 +4,8 @@ from flask import Flask, Response, request
 import requests 
 import json
 
-app = Flask(__name__)
+from settings import *
 
-txt = open("apikey.txt", "r")
-apikey = txt.read().strip('\n').strip()
-
-API_URL = 'https://api-na.hosted.exlibrisgroup.com/almaws/v1'
-API_KEY = apikey
-CIRC_DESK = 'GRI Open S'
-LIB_NAME = 'GC'
 
 LOAN_XML = """<?xml version='1.0' encoding='UTF-8'?>
   <item_loan>
@@ -20,6 +13,9 @@ LOAN_XML = """<?xml version='1.0' encoding='UTF-8'?>
     <library>{}</library>
   </item_loan>
 """.format(CIRC_DESK, LIB_NAME)
+
+
+app = Flask(__name__)
 
 
 @app.route('/')

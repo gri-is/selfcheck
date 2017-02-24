@@ -1,11 +1,10 @@
 .DS_Store
 
-__pycache__
-
 LICENSE.md
 
+ENV
+
+__pycache__
 *.pyc
 
-apikey.txt
-
-ENV
+settings.py
