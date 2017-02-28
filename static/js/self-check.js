@@ -93,7 +93,7 @@ function login() {
 			user = data;
 			rpatron = data['full_name'];
 			rstatus = data['user_group']['desc'];
-
+			loans = data.loans.value;
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);
@@ -176,7 +176,10 @@ function loan() {
     			function silentErrorHandler() {return true;}
 				window.onerror=silentErrorHandler;
     		}
-    	
+    		//updates loans
+    		loans += 1;
+            $("#userloans").text(loans);
+            
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
