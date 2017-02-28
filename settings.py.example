@@ -2,7 +2,7 @@
 # Create an API key with your ExLibris Developer Network
 #  -see here: https://developers.exlibrisgroup.com/
 
-API_KEY = 'l7xx63b4aabaf9264e54a680923760dbfa94'
+API_KEY = 'xxxxxxxxx'
 
 
 ##################################
