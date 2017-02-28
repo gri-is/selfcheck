@@ -100,8 +100,8 @@ function login() {
 			$("#userrequests").text(data.requests.value);
 			$("#userfees").text("$" + data.fees.value);
 			//$("#usernotes").text(data.user_note.length);
-			$("#loanstable").find("tr:gt(0)").remove();
 			
+			$("#loanstable").find("tr:gt(0)").remove();	
 			$("#loginbox").addClass("hide");
 			$("#scanbox").toggleClass("hide");
 			
@@ -124,6 +124,7 @@ function loaduser(data) {
 }
 
 function loan() {
+
 	var barcode = $("#barcode").val();
     if ((barcode != null) && (barcode != "")) {
     	
@@ -139,6 +140,7 @@ function loan() {
     		contentType: "application/json",
     		dataType: "json"
     	}).done(function(data){
+            
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
