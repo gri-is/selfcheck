@@ -93,7 +93,7 @@ function login() {
 			user = data;
 			rpatron = data['full_name'];
 			rstatus = data['user_group']['desc'];
-
+			loans = data.loans.value;
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			$("#userloans").text(data.loans.value);
@@ -101,8 +101,7 @@ function login() {
 			$("#userfees").text("$" + data.fees.value);
 			//$("#usernotes").text(data.user_note.length);
 			
-			$("#loanstable").find("tr:gt(0)").remove();
-			
+			$("#loanstable").find("tr:gt(0)").remove();	
 			$("#loginbox").addClass("hide");
 			$("#scanbox").toggleClass("hide");
 			
@@ -141,7 +140,7 @@ function loan() {
     		contentType: "application/json",
     		dataType: "json"
     	}).done(function(data){
-    		
+            
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
     		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
@@ -151,7 +150,6 @@ function loan() {
 			for (var key in data['location_code']) {
 			value = data['location_code'][key];
 			}
-
     		var templateData = {
         		patron: rpatron,
         		status: rstatus,
@@ -178,7 +176,10 @@ function loan() {
     			function silentErrorHandler() {return true;}
 				window.onerror=silentErrorHandler;
     		}
-    		
+    		//updates loans
+    		loans += 1;
+            $("#userloans").text(loans);
+            
     		returnToBarcode();
     		
     	}).fail(function(jqxhr, textStatus, error) {
@@ -207,6 +208,7 @@ function loan() {
 function logout() {
 	$("#userid").val("");
 	$("#lastname").val("");
+	$("#barcode").val("");
 	$("#loginbox").toggleClass("hide");
 	$("#scanbox").toggleClass("hide");
 	$("#userid").focus();
