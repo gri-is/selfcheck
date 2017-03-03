@@ -150,6 +150,9 @@ function loan() {
 			for (var key in data['location_code']) {
 			value = data['location_code'][key];
 			}
+			var d = new Date();
+			var date = d.toLocaleString();
+			
     		var templateData = {
         		patron: rpatron,
         		status: rstatus,
@@ -159,7 +162,7 @@ function loan() {
         		barcode: data['item_barcode'],
         		location: value,
         		callnumb: data['call_number'],
-        		date: Date()
+        		date: date
         	};
         	//load receipt template and load in values to template
         	try {
