@@ -56,8 +56,8 @@ def loan(userid, barcode):
     loans_response = requests.get(url, params=params)
     already_checked_out = loans_response.json().get('item_loan', False)
     #error handling
-    if already_checked_out:
-        return Response('This item is already checked out', 409)
+    '''if already_checked_out:
+        return Response('This item is already checked out', 409)'''
     if loans_response.status_code == 404:
     	return Response('Error: Invalid Barcode', 404)
     # Checkout the item    

@@ -96,9 +96,9 @@ function login() {
 			loans = data.loans.value;
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
-			$("#userloans").text(data.loans.value);
-			$("#userrequests").text(data.requests.value);
-			$("#userfees").text("$" + data.fees.value);
+			//$("#userloans").text(data.loans.value);  //line 46-48 self-check.html
+			//$("#userrequests").text(data.requests.value); //line 47 self-check.html
+			//$("#userfees").text("$" + data.fees.value); //line 48 self-check.html
 			//$("#usernotes").text(data.user_note.length);
 			
 			$("#loanstable").find("tr:gt(0)").remove();	
@@ -180,8 +180,8 @@ function loan() {
 				window.onerror=silentErrorHandler;
     		}
     		//updates loans
-    		loans += 1;
-            $("#userloans").text(loans);
+    		//loans += 1; //line 46 self-check.html
+            //$("#userloans").text(loans); //line 46 self-check.html
             
     		returnToBarcode();
     		
