@@ -169,7 +169,7 @@ function loan() {
     		$.get('static/receipt.html', function(templates){
     		var template = $(templates).filter('#receipt').html();
     		var html = Mustache.to_html(template, templateData); 
-    		receipt = window.open('', '', "width=200,height=100");
+    		receipt = window.open('', '', "width=600,height=600");
     		receipt.document.write(html);
     		receipt.print();
     		receipt.close();
