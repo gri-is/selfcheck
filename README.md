@@ -13,3 +13,6 @@ Alma Self-Check Application
         
 3. Allow popups from selfcheck in browser
 
+4. To run via command line  
+          
+        $ python selfcheckout.py
