@@ -96,9 +96,9 @@ function login() {
 			loans = data.loans.value;
 			// prepare scan box
 			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
-			$("#userloans").text(data.loans.value);
-			$("#userrequests").text(data.requests.value);
-			$("#userfees").text("$" + data.fees.value);
+			//$("#userloans").text(data.loans.value);  //line 46-48 self-check.html
+			//$("#userrequests").text(data.requests.value); //line 47 self-check.html
+			//$("#userfees").text("$" + data.fees.value); //line 48 self-check.html
 			//$("#usernotes").text(data.user_note.length);
 			
 			$("#loanstable").find("tr:gt(0)").remove();	
@@ -143,13 +143,16 @@ function loan() {
             
             var dueDate = new Date(data["due_date"]);
     		var dueDateText = (parseInt(dueDate.getMonth()) + 1) + "/" + dueDate.getDate() + "/" + dueDate.getFullYear();
-    		$("#loanstable").append("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
+    		$("#loanstable tr:first").after("<tr><td>" + data["title"] + "</td><td>" + dueDateText + "</td><td>" + data["item_barcode"] + "</td></tr>");
     		
     		// set values to be entered into receipt
 			var value = '';
 			for (var key in data['location_code']) {
 			value = data['location_code'][key];
 			}
+			var d = new Date();
+			var date = d.toLocaleString();
+			
     		var templateData = {
         		patron: rpatron,
         		status: rstatus,
@@ -159,14 +162,14 @@ function loan() {
         		barcode: data['item_barcode'],
         		location: value,
         		callnumb: data['call_number'],
-        		date: Date()
+        		date: date
         	};
         	//load receipt template and load in values to template
         	try {
     		$.get('static/receipt.html', function(templates){
     		var template = $(templates).filter('#receipt').html();
     		var html = Mustache.to_html(template, templateData); 
-    		receipt = window.open('', '', "width=200,height=100");
+    		receipt = window.open('', '', "width=600,height=600");
     		receipt.document.write(html);
     		receipt.print();
     		receipt.close();
@@ -177,8 +180,8 @@ function loan() {
 				window.onerror=silentErrorHandler;
     		}
     		//updates loans
-    		loans += 1;
-            $("#userloans").text(loans);
+    		//loans += 1; //line 46 self-check.html
+            //$("#userloans").text(loans); //line 46 self-check.html
             
     		returnToBarcode();
     		
