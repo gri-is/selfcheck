@@ -218,7 +218,7 @@ function loan() {
     }
 }
 
-var timeout = 10;
+var timeout = 180; //set for 3 minutes
 var idleseconds = 0;
 document.onclick = function() {
     idleseconds = 0;
@@ -233,7 +233,6 @@ window.setInterval(inactive, 1000);
 
 function inactive() {
     idleseconds++;
-    console.log(idleseconds);
     if (idleseconds >= timeout) {
         window.location.assign("http://127.0.0.1:5000");
     }

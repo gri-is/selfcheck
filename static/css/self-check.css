@@ -77,7 +77,7 @@ textarea {
 
 .smallbox {
 	width: 500px;
-	margin: 40px auto 0px auto;
+	margin: 102px auto 0px auto;
 }
 
 .largebox {
@@ -285,3 +285,19 @@ textarea {
 }
 
 
+::-webkit-input-placeholder {
+   color: black;
+   opacity:  1;
+}
+:-moz-placeholder { 
+   color: black;
+   opacity:  1;
+}
+::-moz-placeholder { 
+   color: black;
+   opacity:  1;
+}
+:-ms-input-placeholder {
+   color: black;
+   opacity:  1;
+}
