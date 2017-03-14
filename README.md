@@ -5,8 +5,11 @@ Alma Self-Check Application
 1. Clone the repository
 
        $ cd <your projects directory>
-       $ git clone https://github.com/gri-is/shotlist-validator.git
-       $ cd shotlist-validator
+       $ git clone https://github.com/gri-is/selfcheck.git
+       $ cd selfcheck
 2. Install the required packages
 
         $ pip install -r requirements.txt
+        
+3. Allow popups from selfcheck in browser
+
