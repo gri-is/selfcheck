@@ -58,6 +58,16 @@ function getModalBox() {
 	*/
 }
 
+function inactive() {
+var time;
+window.onload = clearTimeout(time);
+document.onmousemove = clearTimeout(time);
+document.onkeypress = clearTimeout(time);
+
+clearTimeout(time);
+time = setTimeout(logout(), 6000);
+}
+
 function returnToBarcode() {
 	$("#barcode").prop("disabled", false);
 	$("#myModal").hide();
@@ -205,6 +215,27 @@ function loan() {
     	}).always(function() {
     		
     	});
+    }
+}
+
+var timeout = 180; //set for 3 minutes
+var idleseconds = 0;
+document.onclick = function() {
+    idleseconds = 0;
+};
+document.onmousemove = function() {
+    idleseconds = 0;
+};
+document.onkeypress = function() {
+    idleseconds = 0;
+};
+window.setInterval(inactive, 1000);
+
+function inactive() {
+    idleseconds++;
+    console.log(idleseconds)
+    if (idleseconds >= timeout) {
+        window.location.assign("http://127.0.0.1:5000");
     }
 }
 
