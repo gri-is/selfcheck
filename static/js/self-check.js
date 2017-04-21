@@ -1,9 +1,7 @@
 /* CONSTANTS */
-var baseURL = "http://127.0.0.1:5000/";
+var BASE_URL = CONFIG.baseURL;
+var TIMEOUT = CONFIG.timeout;
 
-//var apiKey = ""
-var libraryName = "GC";
-var circDesk = "GRI Open S";
 
 function initiate() {
 	getModalBox();
@@ -94,7 +92,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		url: baseURL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
+    		url: BASE_URL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -146,7 +144,7 @@ function loan() {
 
     	$.ajax({
     		type: "GET",
-			url: baseURL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
+			url: BASE_URL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
     		contentType: "application/json",
     		dataType: "json"
     	}).done(function(data){
@@ -218,7 +216,7 @@ function loan() {
     }
 }
 
-var timeout = 180; //set for 3 minutes
+
 var idleseconds = 0;
 document.onclick = function() {
     idleseconds = 0;
@@ -234,8 +232,8 @@ window.setInterval(inactive, 1000);
 function inactive() {
     idleseconds++;
     //console.log(idleseconds)
-    if (idleseconds >= timeout) {
-        window.location.assign("http://127.0.0.1:5000");
+    if (idleseconds >= TIMEOUT) {
+        window.location.assign(BASE_URL);
     }
 }
 
