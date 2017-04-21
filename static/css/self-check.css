@@ -133,6 +133,25 @@ textarea {
 	text-align: center;
 }
 
+.maincontent .databox input[type="password"] {
+    margin: 5px 0px 5px 5px;
+    border: 1px solid #cdcdcd;
+    border-radius: 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    
+    background-color: #fff;
+    padding: 0 10px 0 10px;
+    width: 80%;
+    font-size: 15px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+    
+    text-align: center;
+}
+
 .maincontent .databox input[type="button"] {
 	padding: 10px 40px;
 
