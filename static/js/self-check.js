@@ -1,6 +1,6 @@
 /* CONSTANTS */
-var BASE_URL = CONFIG.baseURL;
-var TIMEOUT = CONFIG.timeout;
+var BASE_URL = window.location.origin;
+var TIMEOUT = 180;
 
 
 function initiate() {
