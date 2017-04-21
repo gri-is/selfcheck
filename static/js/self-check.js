@@ -92,7 +92,7 @@ function login() {
         
         $.ajax({
     		type: "GET",
-    		url: BASE_URL + "login/" + $("#userid").val() + '/' + $("#lastname").val(),
+    		url: BASE_URL + "/login/" + $("#userid").val() + '/' + $("#lastname").val(),
 			contentType: "text/plain",
 			dataType : "json",
 			crossDomain: true
@@ -144,7 +144,7 @@ function loan() {
 
     	$.ajax({
     		type: "GET",
-			url: BASE_URL + "checkout/" + user.primary_id + "/" + $("#barcode").val(),
+			url: BASE_URL + "/checkout/" + user.primary_id + "/" + $("#barcode").val(),
     		contentType: "application/json",
     		dataType: "json"
     	}).done(function(data){
