@@ -31,6 +31,7 @@ function initiate() {
 var modal;
 var span;
 var user;
+var contact_info;
 
 function getModalBox() {
 	
@@ -100,19 +101,29 @@ function login() {
 		}).done(function(data) {
 			user = data;
 			rpatron = data['full_name'];
-			rstatus = data['user_group']['desc'];
+			contact_info = data.contact_info.address[0];
+			function address(data) {
+				var workAddress = "";
+				for (i = 1; i < 6; i++) {
+					line = "line" + i.toString()
+  					if (data[line] != null) {
+						workAddress = workAddress + "\n" + data[line]
+  					}
+				}
+				return workAddress;
+			}
+			rstatus = address(contact_info);
 			loans = data.loans.value;
 			// prepare scan box
-			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
+			//$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			//$("#userloans").text(data.loans.value);  //line 46-48 self-check.html
 			//$("#userrequests").text(data.requests.value); //line 47 self-check.html
 			//$("#userfees").text("$" + data.fees.value); //line 48 self-check.html
 			//$("#usernotes").text(data.user_note.length);
-			
+			$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);			
 			$("#loanstable").find("tr:gt(0)").remove();	
 			$("#loginbox").addClass("hide");
-			$("#scanbox").toggleClass("hide");
-			
+			$("#scanbox").toggleClass("hide");			
 			$("#barcode").focus();
 						
 		}).fail(function(jqxhr, textStatus, error) {
@@ -129,6 +140,7 @@ function login() {
 
 function loaduser(data) {
 	alert(data);
+	console.log(data);
 }
 
 function loan() {
@@ -200,6 +212,7 @@ function loan() {
     		$("#modalheader").text("");
     		if (jqxhr.status == 409 || jqxhr.status == 404 && jqxhr.responseText == 'Error: Invalid Barcode' || jqxhr.status == 403 ) {
     		console.log(jqxhr.error);
+    		console.log()
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}
     		else {
