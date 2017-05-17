@@ -31,7 +31,7 @@ function initiate() {
 var modal;
 var span;
 var user;
-var contact_info;
+var contactInfo;
 
 function getModalBox() {
 	
@@ -101,7 +101,7 @@ function login() {
 		}).done(function(data) {
 			user = data;
 			rpatron = data['full_name'];
-			contact_info = data.contact_info.address[0];
+			contactInfo = data.contact_info.address[0];
 			function address(data) {
 				var workAddress = "";
 				for (i = 1; i < 6; i++) {
@@ -112,10 +112,9 @@ function login() {
 				}
 				return workAddress;
 			}
-			rstatus = address(contact_info);
+			rstatus = address(contactInfo);
 			loans = data.loans.value;
 			// prepare scan box
-			//$("#scanboxtitle").text("Welcome " + data.first_name + " " + data.last_name);
 			//$("#userloans").text(data.loans.value);  //line 46-48 self-check.html
 			//$("#userrequests").text(data.requests.value); //line 47 self-check.html
 			//$("#userfees").text("$" + data.fees.value); //line 48 self-check.html
