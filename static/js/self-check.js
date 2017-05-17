@@ -140,7 +140,6 @@ function login() {
 
 function loaduser(data) {
 	alert(data);
-	console.log(data);
 }
 
 function loan() {
@@ -212,7 +211,6 @@ function loan() {
     		$("#modalheader").text("");
     		if (jqxhr.status == 409 || jqxhr.status == 404 && jqxhr.responseText == 'Error: Invalid Barcode' || jqxhr.status == 403 ) {
     		console.log(jqxhr.error);
-    		console.log()
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}
     		else {
