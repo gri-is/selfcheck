@@ -101,18 +101,7 @@ function login() {
 		}).done(function(data) {
 			user = data;
 			rpatron = data['full_name'];
-			contactInfo = data.contact_info.address[0];
-			function address(data) {
-				var workAddress = "";
-				for (i = 1; i < 6; i++) {
-					line = "line" + i.toString()
-  					if (data[line] != null) {
-						workAddress = workAddress + "\n" + data[line]
-  					}
-				}
-				return workAddress;
-			}
-			rstatus = address(contactInfo);
+			rstatus = data.contact_info.address[0];
 			loans = data.loans.value;
 			// prepare scan box
 			//$("#userloans").text(data.loans.value);  //line 46-48 self-check.html
@@ -173,7 +162,11 @@ function loan() {
 			
     		var templateData = {
         		patron: rpatron,
-        		status: rstatus,
+        		addressLine1: rstatus.line1,
+        		addressLine2: rstatus.line2,
+        		addressLine3: rstatus.line3,
+        		addressLine4: rstatus.line4,
+        		addressLine5: rstatus.line5,
         		duedate: dueDateText,
         		title: data['title'],
         		author: data['author'],
