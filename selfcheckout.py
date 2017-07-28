@@ -55,14 +55,13 @@ def loan(userid, barcode):
     # del params['item_barcode']
     loans_response = requests.get(url, params=params)
     already_checked_out = loans_response.json().get('item_loan', False)
-    
-    #error handling
+
+    # error handling
     if already_checked_out:
         return Response('This item is already checked out', 409)
     if loans_response.status_code == 404:
         return Response('Error: Invalid Barcode', 404)
-    if loans_response.json().get('total_record_count') == 0:
-        return Response('This item cannot be checked out. See Reference for assistance.')
+
     # Checkout the item
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
@@ -71,6 +70,8 @@ def loan(userid, barcode):
         return Response('Cannot Checkout: Reference Materials', 403)
     if response.status_code == 400 and "non-circulating" in redirect.text.lower():
         return Response('Cannot Checkout: Reserve Materials', 403)
+    if response.status_code == 400 and "loan limit" in response.text.lower():
+        return Response('Item cannot be loaned due to loan limit of 200 items', 403)
     return Response(response, mimetype="application/json")
 
 
