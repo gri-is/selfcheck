@@ -38,11 +38,11 @@ def login(userid, lastname):
             return Response('Incorrect Login<br> Try Again', 500)
     else:
         return Response('Incorrect Login<br>Try Again', 401)
-      
-    
+
+
 @app.route('/checkout/<userid>/<barcode>')
-def loan(userid, barcode):  
-    #test to see if book is already checked out
+def loan(userid, barcode):
+    # test to see if book is already checked out
     barcodeurl = "{}/items".format(API_URL)
     params = {'apiKey': API_KEY,
               'item_barcode': barcode,
@@ -51,25 +51,29 @@ def loan(userid, barcode):
     url = redirect.url
     url, _ = url.split('?')
     url = '{}/loans'.format(url)
-    
-    #del params['item_barcode']
+
+    # del params['item_barcode']
     loans_response = requests.get(url, params=params)
     already_checked_out = loans_response.json().get('item_loan', False)
-    #error handling
+
+    # error handling
     if already_checked_out:
         return Response('This item is already checked out', 409)
     if loans_response.status_code == 404:
-    	return Response('Error: Invalid Barcode', 404)
-    # Checkout the item    
+        return Response('Error: Invalid Barcode', 404)
+
+    # Checkout the item
     url = "{}/users/{}/loans".format(API_URL, userid)
     headers = {'Content-Type': 'application/xml', 'dataType': "xml"}
     response = requests.post(url, params=params, headers=headers, data=LOAN_XML)
     if response.status_code == 400 and "reference" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reference Materials', 403)
+        return Response('Cannot Checkout: Reference Materials', 403)
     if response.status_code == 400 and "non-circulating" in redirect.text.lower():
-    	return Response('Cannot Checkout: Reserve Materials', 403)
+        return Response('Cannot Checkout: Reserve Materials', 403)
+    if response.status_code == 400 and "loan limit" in response.text.lower():
+        return Response('Item cannot be loaned due to loan limit of 200 items', 403)
     return Response(response, mimetype="application/json")
-    
+
 
 if __name__ == "__main__":
     app.run()
