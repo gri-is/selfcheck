@@ -205,6 +205,10 @@ function loan() {
     		console.log(jqxhr.error);
     		$("#modalheader").append(jqxhr.responseText + "<br/><br/>See the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}
+            else if (jqxhr.status == 411 && jqxhr.responseText == 'Item cannot be loaned due to loan limit being reached') {
+            console.log(jqxhr.error);
+            $("#modalheader").append(jqxhr.responseText + "<br/><br/>Please see the Circulation Desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
+            }
     		else {
     		$("#modalheader").append("Unable to checkout item <br/><br/>Please see the reference desk for more information<br/><br/><input class='modalclose' type='button' value='close' id='barcodeerrorbutton' onclick='javascript:returnToBarcode();'/>");
     		}

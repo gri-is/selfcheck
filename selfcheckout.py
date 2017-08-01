@@ -71,7 +71,7 @@ def loan(userid, barcode):
     if response.status_code == 400 and "non-circulating" in redirect.text.lower():
         return Response('Cannot Checkout: Reserve Materials', 403)
     if response.status_code == 400 and "loan limit" in response.text.lower():
-        return Response('Item cannot be loaned due to loan limit of 200 items', 403)
+        return Response('Item cannot be loaned due to loan limit being reached', 411)
     return Response(response, mimetype="application/json")
 
 
