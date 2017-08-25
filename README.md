@@ -13,6 +13,11 @@ Alma Self-Check Application
         
 3. Allow popups from selfcheck in browser
 
-4. To run via command line  
+4. Copy the `settings.py.example` file and edit it.
+
+        $ cp settings.py.example settings.py
+        $ vim settings.py
+
+5. To run via command line  
           
         $ python selfcheckout.py
